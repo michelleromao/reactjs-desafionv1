@@ -4,45 +4,45 @@ import api from "./services/api";
 import "./styles.css";
 
 function App() {
-  const [repository, setRepository] = useState([]);
+  const [repositories, setRepositories] = useState([]);
 
   useEffect(() => {
-    api.get("repository").then((response) => {
-      setRepository(response.data);
+    api.get("repositories").then((response) => {
+      setRepositories(response.data);
     });
   }, []);
 
-  async function handleAddRepository() {
-    const response = await api.post("repository", {
-      title: "Desafio 04",
-      url: "github.io/michelleromao",
-      techs: "node.js, backend",
+  async function handleAddRepositories() {
+    const response = await api.post("repositories", {
+      title: "Aprendendo ReactJS",
+      url: "http://github.com/michelleromao",
+      techs: "reactJS, react",
     });
 
-    const repositorie = response.data;
-    setRepository([...repository, repositorie]);
+    const repository = response.data;
+    setRepositories([...repositories, repository]);
   }
 
-  async function handleRemoveRepository(id) {
-    await api.delete(`repository/${id}`);
+  async function handleRemoveRepositories(id) {
+    await api.delete(`repositories/${id}`);
 
-    setRepository(repository.filter((repositorie) => repositorie.id !== id));
+    setRepositories(repositories.filter((repository) => repository.id !== id));
   }
 
   return (
     <div>
       <ul data-testid="repository-list">
-        {repository.map((repositorie) => (
-          <li key={repositorie.id}>
-            {repositorie.title}
-            <button onClick={() => handleRemoveRepository(repositorie.id)}>
+        {repositories.map((repository) => (
+          <li key={repository.id}>
+            {repository.title}
+            <button onClick={() => handleRemoveRepositories(repository.id)}>
               Remover
             </button>
           </li>
         ))}
       </ul>
 
-      <button onClick={handleAddRepository}>Adicionar</button>
+      <button onClick={handleAddRepositories}>Adicionar</button>
     </div>
   );
 }
